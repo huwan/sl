@@ -39,6 +39,7 @@
 /*                                              by Toyoda Masashi 1992/12/11 */
 
 #include <curses.h>
+// #include <limits.h>
 #include <signal.h>
 #include <unistd.h>
 #include "sl.h"
@@ -55,6 +56,7 @@ int ACCIDENT  = 0;
 int LOGO      = 0;
 int FLY       = 0;
 int C51       = 0;
+int SIGNAL    = 1;
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -75,6 +77,7 @@ void option(char *str)
             case 'F': FLY      = 1; break;
             case 'l': LOGO     = 1; break;
             case 'c': C51      = 1; break;
+            case 'e': SIGNAL   = 1; break;
             default:                break;
         }
     }
@@ -90,7 +93,7 @@ int main(int argc, char *argv[])
         }
     }
     initscr();
-    signal(SIGINT, SIG_IGN);
+    if (!SIGNAL) signal(SIGINT, SIG_IGN);
     noecho();
     curs_set(0);
     nodelay(stdscr, TRUE);
