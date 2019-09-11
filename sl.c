@@ -57,6 +57,7 @@ int LOGO      = 0;
 int FLY       = 0;
 int C51       = 0;
 int SIGNAL    = 1;
+int LOOP      = 1;
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -77,7 +78,8 @@ void option(char *str)
             case 'F': FLY      = 1; break;
             case 'l': LOGO     = 1; break;
             case 'c': C51      = 1; break;
-            case 'e': SIGNAL   = 1; break;
+            case 'e': SIGNAL   = 0; break;
+            case 'f': LOOP     = 0; break;
             default:                break;
         }
     }
@@ -92,6 +94,8 @@ int main(int argc, char *argv[])
             option(argv[i] + 1);
         }
     }
+
+start:
     initscr();
     if (!SIGNAL) signal(SIGINT, SIG_IGN);
     noecho();
@@ -112,10 +116,12 @@ int main(int argc, char *argv[])
         }
         getch();
         refresh();
-        usleep(40000);
+        usleep(30000);
     }
     mvcur(0, COLS - 1, LINES - 1, 0);
     endwin();
+    if (LOOP)
+        goto start;
 
     return 0;
 }
